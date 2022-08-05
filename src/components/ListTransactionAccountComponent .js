@@ -14,11 +14,12 @@ const ListTransactionAccountComponent = () => {
     // setTrAccounts( current => [...current, response.data] );
 
 
+
     useEffect(() => {
         getListTrAccounts(); // Initial population of the array of objects, trAccounts
         listAccountOwners(); // Get list of account owners
-        console.log(customers.length);
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
 
 
     // Put function inside useEffect, to avoid eventual infinity problem
@@ -41,20 +42,23 @@ const ListTransactionAccountComponent = () => {
         // Get number of customers
         CustomerService.getCustomers().then((res) => {
             setCustomers(res.data);
+            
+            console.log("res1");
+            console.log(res.data);
         }).catch(error => {
             console.log(error);
         })
 
         for (let i = 0; i < customers.length; i++) {
-            TransactionAccountService.getTrAccountsByCustomer(i + 1).then((res) => {
+            TransactionAccountService.getTrAccountsByCustomer(i + 1).then((resp) => {
 
-                if (res.data.id !== undefined && res.data.length !== 0) {
-                    setOwners(...owners, res.data);
+                if (resp.data.id !== undefined && resp.data.length !== 0) {
+                    setOwners(oldArr => [...oldArr, resp.data]);
                 }
 
 
-                console.log("res");
-                console.log(res.data);
+                console.log("res2");
+                console.log(resp.data);
 
             }).catch(error => {
                 console.log(error);
@@ -62,6 +66,9 @@ const ListTransactionAccountComponent = () => {
         }
 
     }
+
+    // Assign found customers to accounts
+
 
 
 
@@ -98,15 +105,16 @@ const ListTransactionAccountComponent = () => {
                 </tbody>
 
 
+                {/* Test tBody - delete/move to rest of the renedering when test is done */}
                 <tbody>
-                    {customers.map((customer, index) => {
+                    {customers.map((customer, ind) => {
                         return (
-                            <tr key={index}>
+                            <tr key={ind}>
                                 <td> {customer.id} </td>
                                 <td> {customer.fName} </td>
                                 <td> {customer.transactionAccounts.map(acc => acc.id + ", ")}</td>
                                 <td>
-                                    actions
+                                    {customers.length}
                                 </td>
                             </tr>
                         )

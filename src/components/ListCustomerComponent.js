@@ -85,8 +85,8 @@ class ListCustomerComponent extends Component {
                                         <td> {customer.ssn}</td>
                                         <td> {customer.address}</td>
                                         <td> {customer.email}</td>
-                                        
-                                        {/* Access array of tr-accounts in the array of customers  */}
+
+                                        {/* Access the array of tr-accounts in the current customer object  */}
                                         <td> {customer.transactionAccounts.map(acc =>
                                                 <p key={acc.id} style={{ lineHeight: '40%' }}>{acc.accountNo}</p>
                                         )}
