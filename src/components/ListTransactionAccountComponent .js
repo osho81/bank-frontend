@@ -8,13 +8,13 @@ const ListTransactionAccountComponent = () => {
 
     const [trAccounts, setTrAccounts] = useState([])
     const [customers, setCustomers] = useState([])
-    // const [takenAccounts, setTakenAccounts] = useState([])
-    const [taccArr, setTaccArr] = useState([])
+    const [takenAccounts, setTakenAccounts] = useState([])
+    // const [taccArr, setTaccArr] = useState([])
 
     // Call methods to populate the arrays we need to render data to screen
-    useEffect(() => { 
-        getListTrAccounts(); 
-        getListCusomers(); 
+    useEffect(() => {
+        getListTrAccounts();
+        getListCusomers();
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
 
@@ -22,8 +22,7 @@ const ListTransactionAccountComponent = () => {
     // Put function inside useEffect, to avoid eventual infinity problem
     const getListTrAccounts = () => {
         TransactionAccountService.getTrAccounts().then((response) => {
-            // Suitable when populating array at start
-            setTrAccounts(response.data);
+            setTrAccounts(response.data); // Populate initial array values
 
             console.log("response");
             console.log(response.data);
@@ -42,10 +41,13 @@ const ListTransactionAccountComponent = () => {
 
             // Then get all eventual accounts for each customer
             res.data.map((tacc) => {
+                console.log("Tacc id: " + tacc.id);
                 TransactionAccountService.getTrAccountsByCustomer((tacc.id)).then((resp) => {
-                    setTaccArr(taccArr => [...taccArr, ...resp.data]); // Add array to another array
-                    
-                    console.log("current owner: ", resp.data);
+                    setTakenAccounts(prev => [...prev, ...resp.data]); // Add new array to previous array
+
+                    console.log("current owner:\n", resp.data);
+                }).catch(error => {
+                    console.log(error);
                 })
             })
         }).catch(error => {
@@ -105,33 +107,18 @@ const ListTransactionAccountComponent = () => {
 
                 {/* Test tBody - delete/move to rest of the renedering when test is done  */}
                 <tbody>
-                    {taccArr.map((tacc, index) => {
+                    {takenAccounts.map((takenAccount, indexx) => {
                         return (
-                            <tr key={index}>
-                                <td> {tacc.id} </td>
-                                <td> {tacc.accountNo} </td>
-                                <td> {tacc.balance}</td>
+                            <tr key={indexx}>
+                                <td> {takenAccount.id} </td>
+                                <td> {takenAccount.accountNo} </td>
+                                <td> {takenAccount.balance}</td>
                                 <td> ?????????????????? </td>
                             </tr>
                         )
                     }
                     )}
                 </tbody>
-
-
-                {/* Test tBody - delete/move to rest of the renedering when test is done */}
-                {/* <tbody>
-                    {takenAccounts.map((tacc, ind) => {
-                        return (
-                            <tr key={ind}>
-                                <td> {tacc.id} </td>
-                                <td> {tacc.accountNo} </td>
-                                <td> {tacc.balance}</td>
-                            </tr>
-                        )
-                    }
-                    )}
-                </tbody> */}
 
             </Table>
             <br></br>
