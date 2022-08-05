@@ -8,16 +8,13 @@ const ListTransactionAccountComponent = () => {
 
     const [trAccounts, setTrAccounts] = useState([])
     const [customers, setCustomers] = useState([])
-    const [owners, setOwners] = useState([])
+    // const [takenAccounts, setTakenAccounts] = useState([])
+    const [taccArr, setTaccArr] = useState([])
 
-    // For update/pushing of array (and outside useEffect)
-    // setTrAccounts( current => [...current, response.data] );
-
-
-
-    useEffect(() => {
-        getListTrAccounts(); // Initial population of the array of objects, trAccounts
-        getListCusomers(); // Get list of account owners
+    // Call methods to populate the arrays we need to render data to screen
+    useEffect(() => { 
+        getListTrAccounts(); 
+        getListCusomers(); 
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
 
@@ -34,48 +31,27 @@ const ListTransactionAccountComponent = () => {
         }).catch(error => {
             console.log(error);
         })
-
     }
 
     // Get a list of all accounts that has been assigned a customer
     const getListCusomers = () => {
-        // Get number of customers
+
+        // Get all customers
         CustomerService.getCustomers().then((res) => {
             setCustomers(res.data);
 
-            console.log("res1");
-            console.log(res.data);
-
-            filterOwners(res.data); // Filter customers with accounts
+            // Then get all eventual accounts for each customer
+            res.data.map((tacc) => {
+                TransactionAccountService.getTrAccountsByCustomer((tacc.id)).then((resp) => {
+                    setTaccArr(taccArr => [...taccArr, ...resp.data]); // Add array to another array
+                    
+                    console.log("current owner: ", resp.data);
+                })
+            })
         }).catch(error => {
             console.log(error);
         })
     }
-
-    const filterOwners = (resData) => {
-        for (let i = 1; i <= resData.length; i++) {
-            TransactionAccountService.getTrAccountsByCustomer(i).then((resp) => {
-
-
-                setOwners(oldArr => [...oldArr, resp.data]);
-
-                // if (resp.data.id !== undefined && resp.data.length !== 0) {
-                //     setOwners(oldArr => [...oldArr, resp.data]);
-                // }
-
-                console.log("current owner");
-                console.log(resp.data);
-
-            }).catch(error => {
-                console.log(error);
-            })
-        }
-
-    }
-
-    // Assign found customers to accounts
-
-
 
 
 
@@ -102,7 +78,7 @@ const ListTransactionAccountComponent = () => {
                                 <td> {trAccount.balance}</td>
                                 <td> {trAccount.customer} </td>
                                 <td>
-                                    {owners.length}
+                                    Later
                                 </td>
                             </tr>
                         )
@@ -119,14 +95,43 @@ const ListTransactionAccountComponent = () => {
                                 <td> {customer.id} </td>
                                 <td> {customer.fName} </td>
                                 <td> {customer.transactionAccounts.map(acc => acc.accountNo + ", ")}</td>
-                                <td>
-                                    {owners.map(owner => owner.accountNo)}
-                                </td>
+                                <td> !!!!!!!!!!!!!!!!!!!!!!! </td>
                             </tr>
                         )
                     }
                     )}
                 </tbody>
+
+
+                {/* Test tBody - delete/move to rest of the renedering when test is done  */}
+                <tbody>
+                    {taccArr.map((tacc, index) => {
+                        return (
+                            <tr key={index}>
+                                <td> {tacc.id} </td>
+                                <td> {tacc.accountNo} </td>
+                                <td> {tacc.balance}</td>
+                                <td> ?????????????????? </td>
+                            </tr>
+                        )
+                    }
+                    )}
+                </tbody>
+
+
+                {/* Test tBody - delete/move to rest of the renedering when test is done */}
+                {/* <tbody>
+                    {takenAccounts.map((tacc, ind) => {
+                        return (
+                            <tr key={ind}>
+                                <td> {tacc.id} </td>
+                                <td> {tacc.accountNo} </td>
+                                <td> {tacc.balance}</td>
+                            </tr>
+                        )
+                    }
+                    )}
+                </tbody> */}
 
             </Table>
             <br></br>
