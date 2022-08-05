@@ -17,7 +17,7 @@ const ListTransactionAccountComponent = () => {
 
     useEffect(() => {
         getListTrAccounts(); // Initial population of the array of objects, trAccounts
-        listAccountOwners(); // Get list of account owners
+        getListCusomers(); // Get list of account owners
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
 
@@ -38,26 +38,32 @@ const ListTransactionAccountComponent = () => {
     }
 
     // Get a list of all accounts that has been assigned a customer
-    const listAccountOwners = () => {
+    const getListCusomers = () => {
         // Get number of customers
         CustomerService.getCustomers().then((res) => {
             setCustomers(res.data);
-            
+
             console.log("res1");
             console.log(res.data);
+
+            filterOwners(res.data); // Filter customers with accounts
         }).catch(error => {
             console.log(error);
         })
+    }
 
-        for (let i = 0; i < customers.length; i++) {
-            TransactionAccountService.getTrAccountsByCustomer(i + 1).then((resp) => {
-
-                if (resp.data.id !== undefined && resp.data.length !== 0) {
-                    setOwners(oldArr => [...oldArr, resp.data]);
-                }
+    const filterOwners = (resData) => {
+        for (let i = 1; i <= resData.length; i++) {
+            TransactionAccountService.getTrAccountsByCustomer(i).then((resp) => {
 
 
-                console.log("res2");
+                setOwners(oldArr => [...oldArr, resp.data]);
+
+                // if (resp.data.id !== undefined && resp.data.length !== 0) {
+                //     setOwners(oldArr => [...oldArr, resp.data]);
+                // }
+
+                console.log("current owner");
                 console.log(resp.data);
 
             }).catch(error => {
@@ -96,7 +102,7 @@ const ListTransactionAccountComponent = () => {
                                 <td> {trAccount.balance}</td>
                                 <td> {trAccount.customer} </td>
                                 <td>
-                                    actions
+                                    {owners.length}
                                 </td>
                             </tr>
                         )
@@ -112,9 +118,9 @@ const ListTransactionAccountComponent = () => {
                             <tr key={ind}>
                                 <td> {customer.id} </td>
                                 <td> {customer.fName} </td>
-                                <td> {customer.transactionAccounts.map(acc => acc.id + ", ")}</td>
+                                <td> {customer.transactionAccounts.map(acc => acc.accountNo + ", ")}</td>
                                 <td>
-                                    {customers.length}
+                                    {owners.map(owner => owner.accountNo)}
                                 </td>
                             </tr>
                         )
