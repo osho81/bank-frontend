@@ -6,58 +6,82 @@ import CustomerService from '../Services/CustomerService';
 
 const ListTransactionAccountComponent = () => {
 
+    const [isLoading, setisLoading] = useState(false) // Control rendering
+
     const [trAccounts, setTrAccounts] = useState([])
     const [customers, setCustomers] = useState([])
     const [takenAccounts, setTakenAccounts] = useState([])
-    // const [taccArr, setTaccArr] = useState([])
+    // const [intersections, setIntersections] = useState([])
 
     // Call methods to populate the arrays we need to render data to screen
     useEffect(() => {
+
+        // Put functions here inside useEffect, to avoid eventual infinity problem
+        const getListTrAccounts = () => {
+            setisLoading(true);
+            TransactionAccountService.getTrAccounts().then((response) => {
+                setTrAccounts(response.data); // Populate initial array values
+
+                console.log("response");
+                console.log(response.data);
+
+            }).catch(error => {
+                console.log(error);
+            })
+            setisLoading(false);
+        }
+
+        // Get a list of all accounts that has been assigned a customer
+        const getListCusomers = () => {
+            setisLoading(true);
+
+            // Get all customers
+            CustomerService.getCustomers().then((res) => {
+                setCustomers(res.data);
+
+                // Then get all eventual accounts for each customer
+                res.data.map((cust) => {
+                    console.log("Cust id: " + cust.id);
+                    
+                    TransactionAccountService.getTrAccountsByCustomer((cust.id)).then((resp) => {
+                        setTakenAccounts(prev => [...prev, ...resp.data]); // Add new array to previous array
+
+                        console.log("Assigned accounts:\n", resp.data); 
+
+
+                        ////// CONTINUE HERE - FIX: DISPLAY OWNER
+                        resp.data.map((currAcc) => {
+                            if (cust.transactionAccounts.indexOf(currAcc.id)) {
+                                console.log("Match!!!", currAcc.id);
+
+                            }
+                        })
+                        
+
+                       // setIntersections({intersections: resp.data.filter(e => resp.data.indexOf(e.customer) !== -1)}) 
+
+
+                    }).catch(error => {
+                        console.log(error);
+                    })
+                })
+            }).catch(error => {
+                console.log(error);
+            })
+            setisLoading(false);
+        }
+
+
         getListTrAccounts();
         getListCusomers();
+
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
 
-
-    // Put function inside useEffect, to avoid eventual infinity problem
-    const getListTrAccounts = () => {
-        TransactionAccountService.getTrAccounts().then((response) => {
-            setTrAccounts(response.data); // Populate initial array values
-
-            console.log("response");
-            console.log(response.data);
-
-        }).catch(error => {
-            console.log(error);
-        })
-    }
-
-    // Get a list of all accounts that has been assigned a customer
-    const getListCusomers = () => {
-
-        // Get all customers
-        CustomerService.getCustomers().then((res) => {
-            setCustomers(res.data);
-
-            // Then get all eventual accounts for each customer
-            res.data.map((tacc) => {
-                console.log("Tacc id: " + tacc.id);
-                TransactionAccountService.getTrAccountsByCustomer((tacc.id)).then((resp) => {
-                    setTakenAccounts(prev => [...prev, ...resp.data]); // Add new array to previous array
-
-                    console.log("current owner:\n", resp.data);
-                }).catch(error => {
-                    console.log(error);
-                })
-            })
-        }).catch(error => {
-            console.log(error);
-        })
-    }
-
-
-
-    return (
+    // Add ternary operation for isLoading rendering control 
+    return isLoading ? (
+        <p>Page is loading</p>
+    ) : (
         <div style={{ marginBottom: '5%' }}>
             <h2 className='list-header'>Transaction Accounts</h2>
             <Table striped bordered hover>
@@ -96,7 +120,7 @@ const ListTransactionAccountComponent = () => {
                             <tr key={ind}>
                                 <td> {customer.id} </td>
                                 <td> {customer.fName} </td>
-                                <td> {customer.transactionAccounts.map(acc => acc.accountNo + ", ")}</td>
+                                <td> {customer.transactionAccounts.map(acc => acc.accountNo + " (# " + acc.id + ") ")}</td>
                                 <td> !!!!!!!!!!!!!!!!!!!!!!! </td>
                             </tr>
                         )
