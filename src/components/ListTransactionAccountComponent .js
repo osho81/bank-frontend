@@ -17,52 +17,54 @@ const ListTransactionAccountComponent = () => {
     useEffect(() => {
 
         // Put functions here inside useEffect, to avoid eventual infinity problem
-        const getListTrAccounts = () => {
-            setisLoading(true);
-            TransactionAccountService.getTrAccounts().then((response) => {
-                setTrAccounts(response.data); // Populate initial array values
+        // const getListTrAccounts = () => {
+        //     setisLoading(true);
+        //     TransactionAccountService.getTrAccounts().then((response) => {
+        //         setTrAccounts(response.data); // Populate initial array values
 
-                console.log("response");
-                console.log(response.data);
+        //         console.log("response");
+        //         console.log(response.data);
 
-            }).catch(error => {
-                console.log(error);
-            })
-            setisLoading(false);
-        }
+        //     }).catch(error => {
+        //         console.log(error);
+        //     })
+        //     setisLoading(false);
+        // }
 
         // Get a list of all accounts that has been assigned a customer
         const getListCusomers = () => {
             setisLoading(true);
 
-            // Get all customers
-            CustomerService.getCustomers().then((res) => {
-                setCustomers(res.data);
+            TransactionAccountService.getTrAccounts().then((response) => {
+                setTrAccounts(response.data); // Populate initial account array values
+                console.log("all acc array");
+                console.log(response.data);
 
-                // Then get all eventual accounts for each customer
-                res.data.map((cust) => {
-                    console.log("Cust id: " + cust.id);
-                    
-                    TransactionAccountService.getTrAccountsByCustomer((cust.id)).then((resp) => {
-                        setTakenAccounts(prev => [...prev, ...resp.data]); // Add new array to previous array
+                // Get all customers
+                CustomerService.getCustomers().then((res) => {
+                    setCustomers(res.data);
+                    console.log("all cust array");
+                    console.log(res.data);
 
-                        console.log("Assigned accounts:\n", resp.data); 
+                    // Then get all eventual accounts for each customer
+                    res.data.map((cust) => { // For each customer...
 
+                        // ...get assigned transaction accounts by current customer id
+                        TransactionAccountService.getTrAccountsByCustomer((cust.id)).then((resp) => {
+                            console.log("Assigned accounts for ", cust.id, "\n", resp.data);
 
-                        ////// CONTINUE HERE - FIX: DISPLAY OWNER
-                        resp.data.map((currAcc) => {
-                            if (cust.transactionAccounts.indexOf(currAcc.id)) {
-                                console.log("Match!!!", currAcc.id);
+                            // ...and for each tr-accounts array in current customer obj, look for matches
+                            cust.transactionAccounts.map((currAcc) => {
+                                if (response.data.indexOf(currAcc.id)) {
+                                    console.log("Curr acc id", currAcc.id);
 
-                            }
-                        })
-                        
+                                    // Add to a list matching account with owner, i.e.; 
+                                    // Add new properties: keys (account & owner) and assign them current id:s as values. 
+                                    setTakenAccounts(prev => [...prev, { account: currAcc.id, owner: cust.id }]);
+                                }
+                            })
 
-                       // setIntersections({intersections: resp.data.filter(e => resp.data.indexOf(e.customer) !== -1)}) 
-
-
-                    }).catch(error => {
-                        console.log(error);
+                        }) 
                     })
                 })
             }).catch(error => {
@@ -72,7 +74,7 @@ const ListTransactionAccountComponent = () => {
         }
 
 
-        getListTrAccounts();
+        //getListTrAccounts();
         getListCusomers();
 
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
@@ -102,7 +104,12 @@ const ListTransactionAccountComponent = () => {
                                 <td> {trAccount.id} </td>
                                 <td> {trAccount.accountNo} </td>
                                 <td> {trAccount.balance}</td>
-                                <td> {trAccount.customer} </td>
+                                <td>
+                                    {takenAccounts.map((ownedAcc) => ownedAcc.account === trAccount.id ? " " + ownedAcc.owner : " "
+
+                                    )}
+
+                                </td>
                                 <td>
                                     Later
                                 </td>
@@ -130,7 +137,7 @@ const ListTransactionAccountComponent = () => {
 
 
                 {/* Test tBody - delete/move to rest of the renedering when test is done  */}
-                <tbody>
+                {/* <tbody>
                     {takenAccounts.map((takenAccount, indexx) => {
                         return (
                             <tr key={indexx}>
@@ -142,7 +149,7 @@ const ListTransactionAccountComponent = () => {
                         )
                     }
                     )}
-                </tbody>
+                </tbody> */}
 
             </Table>
             <br></br>
