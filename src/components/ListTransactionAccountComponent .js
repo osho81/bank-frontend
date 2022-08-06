@@ -9,7 +9,7 @@ const ListTransactionAccountComponent = () => {
     const [isLoading, setisLoading] = useState(false) // Control rendering
 
     const [trAccounts, setTrAccounts] = useState([])
-    const [customers, setCustomers] = useState([])
+    // const [customers, setCustomers] = useState([])
     const [takenAccounts, setTakenAccounts] = useState([])
     // const [intersections, setIntersections] = useState([])
 
@@ -42,7 +42,7 @@ const ListTransactionAccountComponent = () => {
 
                 // Get all customers
                 CustomerService.getCustomers().then((res) => {
-                    setCustomers(res.data);
+                    // setCustomers(res.data); // Redundant (only using customer data here locally)
                     console.log("all cust array");
                     console.log(res.data);
 
@@ -59,12 +59,12 @@ const ListTransactionAccountComponent = () => {
                                     console.log("Curr acc id", currAcc.id);
 
                                     // Add to a list matching account with owner, i.e.; 
-                                    // Add new properties: keys (account & owner) and assign them current id:s as values. 
-                                    setTakenAccounts(prev => [...prev, { account: currAcc.id, owner: cust.id }]);
+                                    // Add new properties: keys (acc_id & owner_id) and assign them current id:s as values. 
+                                    setTakenAccounts(prev => [...prev, { acc_id: currAcc.id, owner_id: cust.id }]);
                                 }
                             })
 
-                        }) 
+                        })
                     })
                 })
             }).catch(error => {
@@ -105,8 +105,8 @@ const ListTransactionAccountComponent = () => {
                                 <td> {trAccount.accountNo} </td>
                                 <td> {trAccount.balance}</td>
                                 <td>
-                                    {takenAccounts.map((ownedAcc) => ownedAcc.account === trAccount.id ? " " + ownedAcc.owner : " "
-
+                                    {takenAccounts.map((ownedAcc) =>
+                                        ownedAcc.acc_id === trAccount.id ? " " + ownedAcc.owner_id : " "
                                     )}
 
                                 </td>
@@ -121,7 +121,7 @@ const ListTransactionAccountComponent = () => {
 
 
                 {/* Test tBody - delete/move to rest of the renedering when test is done */}
-                <tbody>
+                {/* <tbody>
                     {customers.map((customer, ind) => {
                         return (
                             <tr key={ind}>
@@ -133,23 +133,21 @@ const ListTransactionAccountComponent = () => {
                         )
                     }
                     )}
-                </tbody>
+                </tbody> */}
 
 
                 {/* Test tBody - delete/move to rest of the renedering when test is done  */}
-                {/* <tbody>
+                <tbody>
                     {takenAccounts.map((takenAccount, indexx) => {
                         return (
                             <tr key={indexx}>
-                                <td> {takenAccount.id} </td>
-                                <td> {takenAccount.accountNo} </td>
-                                <td> {takenAccount.balance}</td>
-                                <td> ?????????????????? </td>
+                                <td> {takenAccount.account} </td>
+                                <td> {takenAccount.owner} </td>
                             </tr>
                         )
                     }
                     )}
-                </tbody> */}
+                </tbody>
 
             </Table>
             <br></br>
