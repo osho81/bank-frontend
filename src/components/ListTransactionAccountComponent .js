@@ -107,9 +107,8 @@ const ListTransactionAccountComponent = () => {
                                 </td>
                                 <td>
 
-                                    <Button variant="primary" onClick={() => viewTrAccountDetails(trAccount.id)}>Select</Button>
-                                    {/* {" "} */}
-                                    {/* <Button variant="danger" onClick={() => this.deleteTrAccount(customer.id)}>Delete</Button> */}
+                                    <Button variant="primary" onClick={() => viewTrAccountDetails(trAccount.id)}>Select</Button>{" "}
+                                    <Button variant="danger" onClick={() => deleteTrAccount(trAccount.id)}>Delete</Button>
 
                                 </td>
                             </tr>

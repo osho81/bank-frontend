@@ -3,7 +3,7 @@ import CustomerService from '../Services/CustomerService';
 import { Card, Table, Container, Button } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 
-function ViewCustomer(props) {
+function ViewCustomerComponent(props) {
 
   const navigate = useNavigate();
   const navigateBack = useNavigate();
@@ -83,4 +83,4 @@ function ViewCustomer(props) {
   );
 }
 
-export default ViewCustomer;
+export default ViewCustomerComponent;

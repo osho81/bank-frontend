@@ -3,7 +3,7 @@ import { Card, Table, Container, Button } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 import TransactionAccountService from '../Services/TransactionAccountService';
 
-function ViewTrAccount(props) {
+function ViewTrAccountComponent(props) {
 
   const navigate = useNavigate();
   const navigateBack = useNavigate();
@@ -13,7 +13,7 @@ function ViewTrAccount(props) {
 
 
   useEffect(() => {
-    TransactionAccountService.getTrAccountsById(id).then((response) => { 
+    TransactionAccountService.getTrAccountById(id).then((response) => { 
       setTransactionAccount(response.data)
     }).catch(error => {
       console.log(error);
@@ -21,13 +21,13 @@ function ViewTrAccount(props) {
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
 
-  // const editCustomer = () => {
-  //   navigate(`/update-customer/${id}`);
-  // }
+  const editTrAccount = () => {
+    navigate(`/update-traccount/${id}`);
+  }
 
-  // const goToListCustomers = () => {
-  //   navigateBack('/customers', { replace: true });
-  // } 
+  const goToListTrAccounts = () => {
+    navigateBack('/t-accounts', { replace: true });
+  } 
 
 
   return (
@@ -57,13 +57,13 @@ function ViewTrAccount(props) {
             </tr> */}
           </tbody>
         </Table>
-        {/* <Card.Body>
-          <Button variant="primary" onClick={editCustomer}>Edit</Button>{' '}
-          <Button variant="danger" onClick={goToListCustomers}>Back</Button>
-        </Card.Body> */}
+        <Card.Body>
+          <Button variant="primary" onClick={editTrAccount}>Edit</Button>{' '}
+          <Button variant="danger" onClick={goToListTrAccounts}>Back</Button>
+        </Card.Body>
       </Card>
     </Container >
   );
 }
 
-export default ViewTrAccount;
+export default ViewTrAccountComponent;

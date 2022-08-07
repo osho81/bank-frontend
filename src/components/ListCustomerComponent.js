@@ -50,7 +50,6 @@ class ListCustomerComponent extends Component {
         CustomerService.deleteCustomer(id).then(res => {
             this.setState({ customers: this.state.customers.filter(customer => customer.id !== id) });
         });
-
     }
 
 
@@ -88,7 +87,7 @@ class ListCustomerComponent extends Component {
 
                                         {/* Access the array of tr-accounts in the current customer object  */}
                                         <td> {customer.transactionAccounts.map(acc =>
-                                                <p key={acc.id} style={{ lineHeight: '40%' }}>{acc.accountNo}</p>
+                                            <p key={acc.id} style={{ lineHeight: '40%' }}>{acc.accountNo}</p>
                                         )}
                                         </td>
                                         <td>
