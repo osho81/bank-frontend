@@ -9,7 +9,7 @@ class WelcomeComponent extends Component {
                 <br></br>
                 {/* Links styled as a buttons*/}
                 <Link to="/customers" className="btn btn-primary">All Customers</Link>{" "}
-                <Link to="/t-accounts" className="btn btn-primary">All Accounts</Link>
+                <Link to="/tr-accounts" className="btn btn-primary">All Accounts</Link>
             </div>
         );
     }

@@ -26,7 +26,7 @@ function ViewTrAccountComponent(props) {
   }
 
   const goToListTrAccounts = () => {
-    navigateBack('/t-accounts', { replace: true });
+    navigateBack('/tr-accounts', { replace: true });
   } 
 
 

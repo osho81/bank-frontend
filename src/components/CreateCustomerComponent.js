@@ -53,7 +53,7 @@ function CreateCustomerComponent() {
                     <Card.Body>
                         <Card.Title style={{ fontSize: 24 }} > Customer details</Card.Title>
                         <Card.Text>
-                            Please enter customer details and press submit when finished
+                            Please enter customer details and press submit when done
                         </Card.Text>
 
                         {/* Use react-bootstrap forms component inside a cards component */}
