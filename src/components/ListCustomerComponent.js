@@ -21,6 +21,7 @@ class ListCustomerComponent extends Component {
         this.addCustomer = this.addCustomer.bind(this);
         this.shownCustomerDetails = this.viewCustomerDetails.bind(this);
         this.deleteCustomer = this.deleteCustomer.bind(this);
+        // this.viewTrAccountDetails = this.viewTrAccountDetails.bind(this);
 
     }
 
@@ -44,8 +45,11 @@ class ListCustomerComponent extends Component {
         this.props.navigate(`/view-customer/${id}`);
     }
 
-    deleteCustomer(id) {
+    // viewTrAccountDetails = (id) => {
+    //     navigate(`/view-traccount/${id}`);
+    // }
 
+    deleteCustomer(id) {
         // Delete & filter to refresh remaining customers:
         CustomerService.deleteCustomer(id).then(res => {
             this.setState({ customers: this.state.customers.filter(customer => customer.id !== id) });
@@ -85,10 +89,14 @@ class ListCustomerComponent extends Component {
                                         <td> {customer.address}</td>
                                         <td> {customer.email}</td>
 
-                                        {/* Access the array of tr-accounts in the current customer object  */}
-                                        <td> {customer.transactionAccounts.map(acc =>
-                                            <p key={acc.id} style={{ lineHeight: '40%' }}>{acc.accountNo}</p>
-                                        )}
+                                        {/* Access the array of tr-accounts in the current customer object // onClick={() => this.deleteCustomer(customer.id)} */}
+                                        <td>
+                                            {customer.transactionAccounts.map(acc =>
+                                                <p key={acc.id} style={{ lineHeight: '50%', margin: '1%'}}>
+                                                    <Button variant="outline-info" style={{ fontSize: '9px', margin: '1%', padding: '0'}} >
+                                                        {acc.accountNo + " (Id: " + acc.id + ")"}
+                                                    </Button> </p>
+                                            )}
                                         </td>
                                         <td>
                                             <Button variant="primary" onClick={() => this.viewCustomerDetails(customer.id)}>Select</Button>{" "}

@@ -12,7 +12,7 @@ const ListTransactionAccountComponent = () => {
     const [isLoading, setisLoading] = useState(false) // Control rendering
 
     const [trAccounts, setTrAccounts] = useState([])
-    // const [customers, setCustomers] = useState([])
+    // const [customers, setCustomers] = useState([]) // Just needed intermediary
     const [takenAccounts, setTakenAccounts] = useState([])
     // const [intersections, setIntersections] = useState([])
 
@@ -71,6 +71,13 @@ const ListTransactionAccountComponent = () => {
 
     const viewTrAccountDetails = (id) => {
         navigate(`/view-traccount/${id}`);
+    }
+
+    const deleteTrAccount = (id) => {
+        // Delete & filter to refresh remaining customers:
+        TransactionAccountService.deleteTrAccount(id).then(res => {
+            setTrAccounts(trAccounts.filter(trAccount => trAccount.id !== id)); 
+        });
     }
 
 

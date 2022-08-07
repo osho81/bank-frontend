@@ -51,10 +51,10 @@ function ViewTrAccountComponent(props) {
               <td>Balance</td>
               <td>{transactionAccount.balance}</td>
             </tr>
-            {/* <tr>
+            <tr>
               <td>Customer</td>
-              <td>{transactionAccount.customer.id}</td>
-            </tr> */}
+              <td>{transactionAccount.customer}</td>
+            </tr>
           </tbody>
         </Table>
         <Card.Body>
