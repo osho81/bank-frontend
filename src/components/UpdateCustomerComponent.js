@@ -78,7 +78,7 @@ function UpdateCustomerComponent(props) {
                         </Card.Text>
 
                         {/* Use react-bootstrap forms component inside a cards component */}
-                        <Form style={{ fontSize: 12 }}>
+                        <Form style={{ fontSize: 12, fontWeight: 500 }}>
                             <Form.Group className="mb-1" controlId="formBasicSsn">
                                 <Form.Label>SSN </Form.Label>
                                 <Form.Control size="sm" readOnly type="mute" placeholder="Social security number"
@@ -112,7 +112,7 @@ function UpdateCustomerComponent(props) {
                             <br></br>
 
                             <Button variant="primary" onClick={updateCustomer}>Submit</Button>{' '}
-                            <Button variant="danger" onClick={goToCustomerView}>Cancel</Button>
+                            <Button variant="warning" onClick={goToCustomerView}>Cancel</Button>
 
                             {/* <Button type="submit">Submit form</Button> */}
 

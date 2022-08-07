@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 function CreateCustomerComponent() {
 
     const navigate = useNavigate();
-    const navigateToList= useNavigate();
+    const navigateToList = useNavigate();
 
     // Original (empty) value and new value
     const [fName, setFName] = useState('');
@@ -17,12 +17,12 @@ function CreateCustomerComponent() {
     const [email, setEmail] = useState('');
 
     // Methods for handling new values
-    const handleFName = e => { setFName( e.target.value); };
-    const handleLName = e => { setLName( e.target.value); };
-    const handleDateOfBirth = e => { setDateOfBirth( e.target.value ); };
-    const handleSsn = e => { setSnn( e.target.value ); };
-    const handleAddress = e => { setAddress( e.target.value ); };
-    const handleEmail = e => { setEmail( e.target.value ); };
+    const handleFName = e => { setFName(e.target.value); };
+    const handleLName = e => { setLName(e.target.value); };
+    const handleDateOfBirth = e => { setDateOfBirth(e.target.value); };
+    const handleSsn = e => { setSnn(e.target.value); };
+    const handleAddress = e => { setAddress(e.target.value); };
+    const handleEmail = e => { setEmail(e.target.value); };
 
 
     // Handle all inputs, i.e. use all new values to construct a Customer object
@@ -47,7 +47,7 @@ function CreateCustomerComponent() {
 
     return (
         <div>
-            <Container style={{ marginLeft: '12,5%', marginBottom: '5%' , width: '75%', justifyContent: 'center' }}>
+            <Container style={{ marginLeft: '12,5%', marginBottom: '5%', width: '75%', justifyContent: 'center' }}>
                 {/* Card has 75% width of the container's 75% screen width */}
                 <Card style={{ marginLeft: '20%', width: '60%' }}>
                     <Card.Body>
@@ -57,7 +57,7 @@ function CreateCustomerComponent() {
                         </Card.Text>
 
                         {/* Use react-bootstrap forms component inside a cards component */}
-                        <Form style={{ fontSize: 14 }}>
+                        <Form style={{ fontSize: 14, fontWeight: 500 }}>
                             <Form.Group className="mb-2" controlId="formBasicFirstName">
                                 <Form.Label>First Name</Form.Label>
                                 <Form.Control size="sm" type="text" placeholder="Enter first name"
@@ -90,7 +90,7 @@ function CreateCustomerComponent() {
                             </Form.Group>
 
                             <Button variant="primary" onClick={createCustomer}>Submit</Button>{' '}
-                            <Button variant="danger" onClick={goToListCustomers}>Cancel</Button>
+                            <Button variant="warning" onClick={goToListCustomers}>Cancel</Button>
 
                             {/* <Button type="submit">Submit form</Button> */}
 

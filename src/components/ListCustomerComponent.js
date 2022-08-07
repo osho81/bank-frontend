@@ -20,8 +20,9 @@ class ListCustomerComponent extends Component {
         // Bind events to the constructor
         this.addCustomer = this.addCustomer.bind(this);
         this.shownCustomerDetails = this.viewCustomerDetails.bind(this);
+        this.viewTrAccountDetails = this.viewTrAccountDetails.bind(this);
         this.deleteCustomer = this.deleteCustomer.bind(this);
-        // this.viewTrAccountDetails = this.viewTrAccountDetails.bind(this);
+        this.goBack = this.goBack.bind(this);
 
     }
 
@@ -48,6 +49,9 @@ class ListCustomerComponent extends Component {
         this.props.navigate(`/view-traccount/${id}`);
     }
 
+    goBack = () => {
+        this.props.navigate("/");
+    }
 
     deleteCustomer(id) {
         // Delete & filter to refresh remaining customers:
@@ -77,7 +81,7 @@ class ListCustomerComponent extends Component {
                         </tr>
                     </thead>
 
-                    <tbody>
+                    <tbody style={ {fontWeight: 500} }>
                         {
                             this.state.customers.map(
                                 (customer, index) =>
@@ -91,8 +95,8 @@ class ListCustomerComponent extends Component {
 
                                         {/* Access the array of tr-accounts of current customer object; enable redirect to account page */}
                                         <td>
-                                            {customer.transactionAccounts.map(acc =>
-                                                <p key={acc.id} style={{ lineHeight: '50%', margin: '1%'}}>
+                                            {customer.transactionAccounts.map((acc, index ) =>
+                                                <p key={index} style={{ lineHeight: '50%', margin: '1%'}}>
                                                     <Button variant="outline-info" style={{ fontSize: '9px', margin: '1%', padding: '0'}} 
                                                     onClick={() => this.viewTrAccountDetails(acc.id)}>
                                                         {acc.accountNo + " (Id: " + acc.id + ")"}
@@ -110,7 +114,8 @@ class ListCustomerComponent extends Component {
                 </Table>
                 <br></br>
                 <div className="text-center">
-                    <Button variant="primary" onClick={this.addCustomer}>New Customer</Button>
+                    <Button variant="primary" onClick={this.addCustomer}>New Customer</Button>{" "}
+                    <Button variant="warning" onClick={this.goBack}>Back</Button>
                 </div>
             </div>
         );

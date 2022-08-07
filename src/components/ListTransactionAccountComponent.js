@@ -35,12 +35,10 @@ const ListTransactionAccountComponent = () => {
 
                         // ...get assigned transaction accounts by the current customer id
                         TransactionAccountService.getTrAccountsByCustomer((cust.id)).then((resp) => {
-                            console.log("Assigned accounts for cust ", cust.id, "\n", resp.data);
 
                             // ...and for each tr-accounts array in current customer obj, look for matches
                             cust.transactionAccounts.map((currAcc) => {
                                 if (resp.data.indexOf(currAcc.id)) { // If account exist at current customer data...
-                                    console.log("Curr acc id", currAcc.id);
 
                                     // ...add to a list matching account with owner, i.e.; 
                                     // Add new properties: keys (acc_id & owner_id) and assign them current id:s as values. 
@@ -57,15 +55,13 @@ const ListTransactionAccountComponent = () => {
             setisLoading(false);
         }
 
-
-        //getListTrAccounts();
         getListCusomers();
 
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
 
     const addTrAccount = () => {
-        navigate("/create-traccount/_add");
+        navigate("/create-traccount/_add", { replace: true });
     }
 
     const viewTrAccountDetails = (id) => {
@@ -74,6 +70,10 @@ const ListTransactionAccountComponent = () => {
 
     const viewCustomerDetails = (id) => {
         navigate(`/view-customer/${id}`);
+    }
+
+    const goBack = () => {
+        navigate("/", { replace: true });
     }
 
     const deleteTrAccount = (id) => {
@@ -102,7 +102,7 @@ const ListTransactionAccountComponent = () => {
                     </tr>
                 </thead>
 
-                <tbody>
+                <tbody style={ {fontWeight: 500} }>
                     {trAccounts.map((trAccount, index) => {
                         return (
                             <tr key={index}>
@@ -111,8 +111,8 @@ const ListTransactionAccountComponent = () => {
                                 <td> {trAccount.balance}</td>
                                 <td>
                                     {/* Ternary operator to return customer/owner for account that has such */}
-                                    {takenAccounts.map((ownedAcc) =>
-                                        <p key={ownedAcc.acc_id} style={{ lineHeight: '40%', margin: '1%'}}>
+                                    {takenAccounts.map((ownedAcc, index) =>
+                                        <p key={index} style={{ lineHeight: '40%', margin: '1%' }}>
                                             {ownedAcc.acc_id === trAccount.id ?
                                                 <Button variant="outline-info" style={{ fontSize: '12px', margin: '1%', padding: '1%' }}
                                                     onClick={() => viewCustomerDetails(ownedAcc.owner_id)}>
@@ -135,7 +135,8 @@ const ListTransactionAccountComponent = () => {
             </Table>
             <br></br>
             <div className="text-center">
-                <Button variant="primary" onClick={addTrAccount}>New Account</Button>
+                <Button variant="primary" onClick={addTrAccount}>New Account</Button>{" "}
+                <Button variant="warning" onClick={goBack}>Back</Button>
             </div>
         </div>
     );

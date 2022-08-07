@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Form, Button, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import CustomerService from '../Services/CustomerService';
+// import CustomerService from '../Services/CustomerService';
 import TransactionAccountService from '../Services/TransactionAccountService';
 
 
@@ -22,13 +22,13 @@ function CreateTrAccountComponent(props) {
     const createTrAccount = e => {
         e.preventDefault();
 
-        CustomerService.getCustomerById(owner).then((response) => {
+        // CustomerService.getCustomerById(owner).then((response) => { // Don't need, since pass in id
 
-            let trAccount = { accountNo: accountNo, balance: balance, customer: response.data };
+        var trAccount = { accountNo: accountNo, balance: balance, customer: { id: owner } }; // automatically finds customer by id
 
-            TransactionAccountService.saveTrAccount(trAccount).then((res) => {
-                navigate('/tr-accounts', { replace: true });
-            })
+        TransactionAccountService.saveTrAccount(trAccount).then((res) => {
+            navigate('/tr-accounts', { replace: true });
+        // })
         }).catch(error => {
             console.log(error)
         });
@@ -48,7 +48,7 @@ function CreateTrAccountComponent(props) {
                         <Card.Text>
                             Please enter account details and press submit when done
                         </Card.Text>
-                        <Form style={{ fontSize: 14 }}>
+                        <Form style={{ fontSize: 12, fontWeight: 500 }}>
                             <Form.Group className="mb-2" controlId="formBasicAccountNumber">
                                 <Form.Label>Account number</Form.Label>
                                 <Form.Control size="sm" type="text" placeholder="Enter account number"
@@ -66,7 +66,7 @@ function CreateTrAccountComponent(props) {
                             </Form.Group>
 
                             <Button variant="primary" onClick={createTrAccount}>Submit</Button>{' '}
-                            <Button variant="danger" onClick={goToListTrAccounts}>Cancel</Button>
+                            <Button variant="warning" onClick={goToListTrAccounts}>Cancel</Button>
 
                         </Form>
                     </Card.Body>

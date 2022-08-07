@@ -38,7 +38,7 @@ function ViewTrAccountComponent(props) {
           <Card.Title>Details for transaction account with id {transactionAccount.id}</Card.Title>
         </Card.Body>
         <Table striped bordered hover>
-          <tbody>
+          <tbody style={ {fontWeight: 500}}>
             <tr>
               <td>Account ID</td>
               <td>{transactionAccount.id}</td>
@@ -59,7 +59,7 @@ function ViewTrAccountComponent(props) {
         </Table>
         <Card.Body>
           <Button variant="primary" onClick={editTrAccount}>Edit</Button>{' '}
-          <Button variant="danger" onClick={goToListTrAccounts}>Back</Button>
+          <Button variant="warning" onClick={goToListTrAccounts}>Back</Button>
         </Card.Body>
       </Card>
     </Container >

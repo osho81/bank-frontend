@@ -7,7 +7,7 @@ function HeaderComponent(props) {
             <header>
                 <Navbar bg="dark" variant="dark" expand="lg">
                     <Container>
-                        <Navbar.Brand href="/" className="header-navbar">Bank App</Navbar.Brand>
+                        <Navbar.Brand href="/" className="header-navbar">Bank Of Bravos</Navbar.Brand>
                     </Container>
                 </Navbar>
             </header>

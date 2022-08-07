@@ -43,7 +43,7 @@ function ViewCustomerComponent(props) {
 
         {/* Table with no table head, only table body */}
         <Table striped bordered hover>
-          <tbody>
+          <tbody style={ {fontWeight: 500}}>
             <tr>
               <td>Customer ID</td>
               <td>{customer.id}</td>
@@ -76,7 +76,7 @@ function ViewCustomerComponent(props) {
         </Table>
         <Card.Body>
           <Button variant="primary" onClick={editCustomer}>Edit</Button>{' '}
-          <Button variant="danger" onClick={goToListCustomers}>Back</Button>
+          <Button variant="warning" onClick={goToListCustomers}>Back</Button>
         </Card.Body>
       </Card>
     </Container >
