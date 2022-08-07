@@ -49,17 +49,17 @@ function CreateTrAccountComponent(props) {
                             Please enter account details and press submit when done
                         </Card.Text>
                         <Form style={{ fontSize: 14 }}>
-                            <Form.Group className="mb-2" controlId="formBasicFirstName">
+                            <Form.Group className="mb-2" controlId="formBasicAccountNumber">
                                 <Form.Label>Account number</Form.Label>
                                 <Form.Control size="sm" type="text" placeholder="Enter account number"
                                     value={accountNo} onChange={handleAccountNo} />
                             </Form.Group>
-                            <Form.Group className="mb-2" controlId="formBasicLastName">
+                            <Form.Group className="mb-2" controlId="formBasicBalance">
                                 <Form.Label>Balance</Form.Label>
                                 <Form.Control size="sm" type="number" placeholder="Enter balace"
                                     value={balance} onChange={handleBalance} />
                             </Form.Group>
-                            <Form.Group className="mb-2" controlId="formBasicDateOfBirth">
+                            <Form.Group className="mb-2" controlId="formBasicOwner">
                                 <Form.Label>Owner</Form.Label>
                                 <Form.Control size="sm" type="text" placeholder="Enter id for assigned customer"
                                     value={owner} onChange={handleOwner} />

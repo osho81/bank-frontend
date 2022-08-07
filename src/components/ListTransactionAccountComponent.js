@@ -26,20 +26,16 @@ const ListTransactionAccountComponent = () => {
 
             TransactionAccountService.getTrAccounts().then((response) => {
                 setTrAccounts(response.data); // Populate initial account array values
-                console.log("all acc array");
-                console.log(response.data);
 
                 // Get all customers
                 CustomerService.getCustomers().then((res) => {
                     // setCustomers(res.data); // Redundant (only using customer data temporary/locally)
-                    console.log("all cust array");
-                    console.log(res.data);
 
                     res.data.map((cust) => { // For each customer...
 
                         // ...get assigned transaction accounts by the current customer id
                         TransactionAccountService.getTrAccountsByCustomer((cust.id)).then((resp) => {
-                            console.log("Assigned accounts for ", cust.id, "\n", resp.data);
+                            console.log("Assigned accounts for cust ", cust.id, "\n", resp.data);
 
                             // ...and for each tr-accounts array in current customer obj, look for matches
                             cust.transactionAccounts.map((currAcc) => {
@@ -68,13 +64,16 @@ const ListTransactionAccountComponent = () => {
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
 
-    const addTrAccount = () =>{
-        // Uses wrapper from function component WithWouter.js (since this is a class component)
+    const addTrAccount = () => {
         navigate("/create-traccount/_add");
     }
 
     const viewTrAccountDetails = (id) => {
         navigate(`/view-traccount/${id}`);
+    }
+
+    const viewCustomerDetails = (id) => {
+        navigate(`/view-customer/${id}`);
     }
 
     const deleteTrAccount = (id) => {
@@ -111,10 +110,16 @@ const ListTransactionAccountComponent = () => {
                                 <td> {trAccount.accountNo} </td>
                                 <td> {trAccount.balance}</td>
                                 <td>
+                                    {/* Ternary operator to return customer/owner for account that has such */}
                                     {takenAccounts.map((ownedAcc) =>
-                                        ownedAcc.acc_id === trAccount.id ? " " + ownedAcc.owner_id : " "
+                                        <p key={ownedAcc.acc_id} style={{ lineHeight: '40%', margin: '1%'}}>
+                                            {ownedAcc.acc_id === trAccount.id ?
+                                                <Button variant="outline-info" style={{ fontSize: '12px', margin: '1%', padding: '1%' }}
+                                                    onClick={() => viewCustomerDetails(ownedAcc.owner_id)}>
+                                                    {"Customer-ID: " + ownedAcc.owner_id}
+                                                </Button> : ""}
+                                        </p>
                                     )}
-
                                 </td>
                                 <td>
 
