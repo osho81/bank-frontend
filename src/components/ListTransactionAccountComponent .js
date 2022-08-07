@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Table } from 'react-bootstrap';
+import { Table, Button } from 'react-bootstrap';
 import TransactionAccountService from '../Services/TransactionAccountService';
 import CustomerService from '../Services/CustomerService';
+import { useNavigate } from 'react-router-dom';
 
 
 const ListTransactionAccountComponent = () => {
+
+    const navigate = useNavigate();
 
     const [isLoading, setisLoading] = useState(false) // Control rendering
 
@@ -65,6 +68,13 @@ const ListTransactionAccountComponent = () => {
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
 
+
+    const viewTrAccountDetails = (id) => {
+        navigate(`/view-traccount/${id}`);
+    }
+
+
+
     // Add ternary operation for isLoading rendering control 
     return isLoading ? (
         <p>Page is loading</p>
@@ -96,7 +106,11 @@ const ListTransactionAccountComponent = () => {
 
                                 </td>
                                 <td>
-                                    Later
+
+                                    <Button variant="primary" onClick={() => viewTrAccountDetails(trAccount.id)}>Select</Button>
+                                    {/* {" "} */}
+                                    {/* <Button variant="danger" onClick={() => this.deleteTrAccount(customer.id)}>Delete</Button> */}
+
                                 </td>
                             </tr>
                         )

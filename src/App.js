@@ -9,6 +9,7 @@ import CreateCustomerComponent from './components/CreateCustomerComponent';
 import ViewCustomerComponent from './components/ViewCustomerComponent';
 import UpdateCustomerComponent from './components/UpdateCustomerComponent';
 import ListTransactionAccountComponent from './components/ListTransactionAccountComponent ';
+import ViewTrAccountComponent from './components/ListTransactionAccountComponent ';
 
 // See also index.js (and index.html)
 
@@ -30,6 +31,8 @@ function App() {
 
             {/* transactionAccount related rendering  */}
             <Route path="/t-accounts" element={< ListTransactionAccountComponent />}></Route>
+            <Route path="/view-traccount/:id" element={< ViewTrAccountComponent />}></Route>
+
           </Routes>
         </div>
         <FooterComponent />
