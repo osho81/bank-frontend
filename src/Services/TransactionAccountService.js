@@ -8,6 +8,10 @@ class TransactionAccountService {
         return axios.get(CUSTOMER_API_BASE_URL + "/all");
     }
 
+    getTrAccountById(id) {
+        return axios.get(CUSTOMER_API_BASE_URL + "/" + id);
+    }
+
     // Customized method to get accounts assigned to a certain customer
     getTrAccountsByCustomer(id) {
         return axios.get(CUSTOMER_API_BASE_URL + "/by/" + id);

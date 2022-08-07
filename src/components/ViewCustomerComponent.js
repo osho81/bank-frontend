@@ -13,7 +13,7 @@ function ViewCustomer(props) {
   const { id } = useParams(); // get id param from current url
 
 
-  useEffect(() => {
+  useEffect(() => { // Get customer with aquired id
     CustomerService.getCustomerById(id).then((response) => {
       setCustomer(response.data)
     }).catch(error => {
