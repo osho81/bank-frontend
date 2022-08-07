@@ -36,8 +36,7 @@ class ListCustomerComponent extends Component {
 
     // History.push("path") is deprecated; see useNavigate in react-router-dom v.6
     addCustomer() {
-        // Uses wrapper from function component WithWouter.js
-        // (Because this is a class component)
+        // Uses wrapper from function component WithWouter.js (since this is a class component)
         this.props.navigate("/create-customer/_add");
     }
 
@@ -45,9 +44,10 @@ class ListCustomerComponent extends Component {
         this.props.navigate(`/view-customer/${id}`);
     }
 
-    // viewTrAccountDetails = (id) => {
-    //     navigate(`/view-traccount/${id}`);
-    // }
+    viewTrAccountDetails = (id) => {
+        this.props.navigate(`/view-traccount/${id}`);
+    }
+
 
     deleteCustomer(id) {
         // Delete & filter to refresh remaining customers:
@@ -89,11 +89,12 @@ class ListCustomerComponent extends Component {
                                         <td> {customer.address}</td>
                                         <td> {customer.email}</td>
 
-                                        {/* Access the array of tr-accounts in the current customer object // onClick={() => this.deleteCustomer(customer.id)} */}
+                                        {/* Access the array of tr-accounts of current customer object; enable redirect to account page */}
                                         <td>
                                             {customer.transactionAccounts.map(acc =>
                                                 <p key={acc.id} style={{ lineHeight: '50%', margin: '1%'}}>
-                                                    <Button variant="outline-info" style={{ fontSize: '9px', margin: '1%', padding: '0'}} >
+                                                    <Button variant="outline-info" style={{ fontSize: '9px', margin: '1%', padding: '0'}} 
+                                                    onClick={() => this.viewTrAccountDetails(acc.id)}>
                                                         {acc.accountNo + " (Id: " + acc.id + ")"}
                                                     </Button> </p>
                                             )}
@@ -109,7 +110,7 @@ class ListCustomerComponent extends Component {
                 </Table>
                 <br></br>
                 <div className="text-center">
-                    <Button variant="primary" onClick={this.addCustomer}>Add Customer</Button>
+                    <Button variant="primary" onClick={this.addCustomer}>New Customer</Button>
                 </div>
             </div>
         );

@@ -68,6 +68,10 @@ const ListTransactionAccountComponent = () => {
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
 
+    const addTrAccount = () =>{
+        // Uses wrapper from function component WithWouter.js (since this is a class component)
+        navigate("/create-traccount/_add");
+    }
 
     const viewTrAccountDetails = (id) => {
         navigate(`/view-traccount/${id}`);
@@ -76,7 +80,7 @@ const ListTransactionAccountComponent = () => {
     const deleteTrAccount = (id) => {
         // Delete & filter to refresh remaining customers:
         TransactionAccountService.deleteTrAccount(id).then(res => {
-            setTrAccounts(trAccounts.filter(trAccount => trAccount.id !== id)); 
+            setTrAccounts(trAccounts.filter(trAccount => trAccount.id !== id));
         });
     }
 
@@ -123,41 +127,10 @@ const ListTransactionAccountComponent = () => {
                     }
                     )}
                 </tbody>
-
-
-                {/* Test tBody - delete/move to rest of the renedering when test is done */}
-                {/* <tbody>
-                    {customers.map((customer, ind) => {
-                        return (
-                            <tr key={ind}>
-                                <td> {customer.id} </td>
-                                <td> {customer.fName} </td>
-                                <td> {customer.transactionAccounts.map(acc => acc.accountNo + " (# " + acc.id + ") ")}</td>
-                                <td> !!!!!!!!!!!!!!!!!!!!!!! </td>
-                            </tr>
-                        )
-                    }
-                    )}
-                </tbody> */}
-
-
-                {/* Test tBody - delete/move to rest of the renedering when test is done  */}
-                {/* <tbody>
-                    {takenAccounts.map((takenAccount, indexx) => {
-                        return (
-                            <tr key={indexx}>
-                                <td> {takenAccount.account} </td>
-                                <td> {takenAccount.owner} </td>
-                            </tr>
-                        )
-                    }
-                    )}
-                </tbody> */}
-
             </Table>
             <br></br>
             <div className="text-center">
-                nothing here yet
+                <Button variant="primary" onClick={addTrAccount}>New Account</Button>
             </div>
         </div>
     );
