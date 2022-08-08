@@ -2,19 +2,41 @@ import React, { useState, useEffect } from 'react';
 import { Card, Table, Container, Button } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 import TransactionAccountService from '../Services/TransactionAccountService';
+import CustomerService from '../Services/CustomerService';
 
 function ViewTrAccountComponent(props) {
 
   const navigate = useNavigate();
   const navigateBack = useNavigate();
 
-  const [transactionAccount, setTransactionAccount] = useState('');
-  const { id } = useParams(); 
+  const { id } = useParams();
 
+  const [transactionAccount, setTransactionAccount] = useState('');
+  const [ownerId, setOwnerId] = useState(''); // I.e. assigned customer
 
   useEffect(() => {
-    TransactionAccountService.getTrAccountById(id).then((response) => { 
+    TransactionAccountService.getTrAccountById(id).then((response) => {
       setTransactionAccount(response.data)
+
+      // Function for matching customer for account
+      CustomerService.getCustomers().then((res) => {
+
+        res.data.map((cust) => (
+
+          TransactionAccountService.getTrAccountsByCustomer((cust.id)).then((resp) => {
+
+            cust.transactionAccounts.forEach((currAcc) => {
+
+              // == since not same type comparison
+              if (currAcc.id == id) {
+
+                setOwnerId(cust.id);
+              }
+
+            })
+          })
+        ))
+      })
     }).catch(error => {
       console.log(error);
     })
@@ -27,7 +49,7 @@ function ViewTrAccountComponent(props) {
 
   const goToListTrAccounts = () => {
     navigateBack('/tr-accounts', { replace: true });
-  } 
+  }
 
 
   return (
@@ -38,7 +60,7 @@ function ViewTrAccountComponent(props) {
           <Card.Title>Details for transaction account with id {transactionAccount.id}</Card.Title>
         </Card.Body>
         <Table striped bordered hover>
-          <tbody style={ {fontWeight: 500}}>
+          <tbody style={{ fontWeight: 500 }}>
             <tr>
               <td>Account ID</td>
               <td>{transactionAccount.id}</td>
@@ -53,7 +75,9 @@ function ViewTrAccountComponent(props) {
             </tr>
             <tr>
               <td>Customer</td>
-              <td>{transactionAccount.customer}</td>
+              <td>
+                {ownerId}
+              </td>
             </tr>
           </tbody>
         </Table>

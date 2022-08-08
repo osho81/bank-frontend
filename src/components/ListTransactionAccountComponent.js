@@ -14,7 +14,6 @@ const ListTransactionAccountComponent = () => {
     const [trAccounts, setTrAccounts] = useState([])
     // const [customers, setCustomers] = useState([]) // Just needed intermediary
     const [takenAccounts, setTakenAccounts] = useState([])
-    // const [intersections, setIntersections] = useState([])
 
 
     // Populate the arrays we need to render needed data
@@ -31,14 +30,14 @@ const ListTransactionAccountComponent = () => {
                 CustomerService.getCustomers().then((res) => {
                     // setCustomers(res.data); // Redundant (only using customer data temporary/locally)
 
-                    res.data.map((cust) => { // For each customer...
+                    res.data.map((cust) => ( // For each customer...
 
                         // ...get assigned transaction accounts by the current customer id
                         TransactionAccountService.getTrAccountsByCustomer((cust.id)).then((resp) => {
 
                             // ...and for each tr-accounts array in current customer obj, look for matches
-                            cust.transactionAccounts.map((currAcc) => {
-                                if (resp.data.indexOf(currAcc.id)) { // If account exist at current customer data...
+                            cust.transactionAccounts.forEach((currAcc) => {
+                                if (resp.data.indexOf(currAcc.id)) { // If current account exist in current customer data...
 
                                     // ...add to a list matching account with owner, i.e.; 
                                     // Add new properties: keys (acc_id & owner_id) and assign them current id:s as values. 
@@ -47,7 +46,7 @@ const ListTransactionAccountComponent = () => {
                             })
 
                         })
-                    })
+                    ))
                 })
             }).catch(error => {
                 console.log(error);
@@ -102,7 +101,7 @@ const ListTransactionAccountComponent = () => {
                     </tr>
                 </thead>
 
-                <tbody style={ {fontWeight: 500} }>
+                <tbody style={{ fontWeight: 500 }}>
                     {trAccounts.map((trAccount, index) => {
                         return (
                             <tr key={index}>

@@ -11,6 +11,7 @@ import UpdateCustomerComponent from './components/UpdateCustomerComponent';
 import ListTransactionAccountComponent from './components/ListTransactionAccountComponent';
 import ViewTrAccountComponent from './components/ViewTrAccountComponent';
 import CreateTrAccountComponent from './components/CreateTrAccountComponent';
+import UpdateTrAccountComponent from './components/UpdateTrAccountComponent';
 
 // See also index.js (and index.html)
 
@@ -34,6 +35,7 @@ function App() {
             <Route path="/tr-accounts" element={< ListTransactionAccountComponent />}></Route>
             <Route path="/view-traccount/:id" element={< ViewTrAccountComponent />}></Route>
             <Route path="/create-traccount/:id" element={<CreateTrAccountComponent />}></Route>
+            <Route path="/update-traccount/:id" element={<UpdateTrAccountComponent />}></Route>
 
           </Routes>
         </div>

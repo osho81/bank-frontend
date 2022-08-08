@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { Card, Form, Container, Button } from 'react-bootstrap';
 import TransactionAccountService from '../Services/TransactionAccountService';
+import CustomerService from '../Services/CustomerService';
 
 function UpdateTrAccountComponent(props) {
 
@@ -10,23 +13,52 @@ function UpdateTrAccountComponent(props) {
 
     const [accountNo, setAccountNo] = useState('');
     const [balance, setBalance] = useState('');
-    const [customer, setCustomer] = useState('');
+    const [ownerId, setOwnerId] = useState(''); 
 
     // Id & Account number not allowed to be changed
+    const handleBalance = e => { setBalance(e.target.value); };
+    const handleOwnerId = e => { setOwnerId(e.target.value); };
 
-
-
-
-    useEffect(() => { // Initial retrieval of customer details/values
+    useEffect(() => { 
         TransactionAccountService.getTrAccountById(id).then((response) => {
             setAccountNo(response.data.accountNo);
             setBalance(response.data.balance);
-            setCustomer(response.data.customer);
+
+            // Function for matching customer for account
+            CustomerService.getCustomers().then((res) => (
+                res.data.map((cust) => (
+                    TransactionAccountService.getTrAccountsByCustomer((cust.id)).then((resp) => {
+                        cust.transactionAccounts.forEach((currAcc) => {
+                            // == since not same type comparison
+                            if (currAcc.id == id) { 
+                                setOwnerId(cust.id); 
+                            }
+                        })
+                    })
+                ))
+            ))
         }).catch(error => {
             console.log(error);
         })
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
+
+    const updateTrAccount = e => {
+        e.preventDefault();
+
+        let trAccount = { accountNo, balance, customer: {id: ownerId} };
+
+        TransactionAccountService.updateTrAccount(trAccount, id).then((response) => {
+            console.log(response.data)
+            navigate(`/view-traccount/${id}`);
+        }).catch(error => {
+            console.log(error)
+        });
+    }
+
+    const goToTrAccountView = () => {
+        navigateBack(`/view-traccount/${id}`);
+    }
 
 
     return (
@@ -54,13 +86,19 @@ function UpdateTrAccountComponent(props) {
                             </Form.Group>
                             <Form.Group className="mb-1" controlId="formBasicCustomer">
                                 <Form.Label>Customer</Form.Label>
-                                <Form.Control size="sm" type="text" placeholder="Last name"
-                                    value={customer.id} onChange={handleCustomer} />
+                                <Form.Control size="sm" type="text" placeholder="Customer-ID"
+                                    value={ownerId}
+
+                                    // value={
+                                    //     takenAccounts.map((ownedAcc) =>
+                                    //         ownedAcc.acc_id === id ? ownedAcc.owner_id : ""
+                                    //     )}
+                                    onChange={handleOwnerId} />
                             </Form.Group>
                             <br></br>
 
-                            <Button variant="primary" onClick={updateCustomer}>Submit</Button>{' '}
-                            <Button variant="warning" onClick={goToCustomerView}>Cancel</Button>
+                            <Button variant="primary" onClick={updateTrAccount}>Submit</Button>{' '}
+                            <Button variant="warning" onClick={goToTrAccountView}>Cancel</Button>
 
                             {/* <Button type="submit">Submit form</Button> */}
 

@@ -21,6 +21,10 @@ class TransactionAccountService {
         return axios.post(TRACCOUNT_API_BASE_URL, account);
     }
 
+    updateTrAccount(account, id) {
+        return axios.put(TRACCOUNT_API_BASE_URL + "/" + id, account);
+    }
+
     deleteTrAccount(id) {
         return axios.delete(TRACCOUNT_API_BASE_URL + "/" + id);
     }
