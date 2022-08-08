@@ -12,11 +12,11 @@ function CreateTrAccountComponent(props) {
 
     const [accountNo, setAccountNo] = useState('')
     const [balance, setBalance] = useState('')
-    const [owner, setOwner] = useState('')
+    const [ownerId, setOwnerId] = useState('')
 
     const handleAccountNo = (e) => { setAccountNo(e.target.value) }
     const handleBalance = (e) => { setBalance(e.target.value) }
-    const handleOwner = (e) => { setOwner(e.target.value) }
+    const handleOwner = (e) => { setOwnerId(e.target.value) }
 
 
     const createTrAccount = e => {
@@ -24,7 +24,7 @@ function CreateTrAccountComponent(props) {
 
         // CustomerService.getCustomerById(owner).then((response) => { // Don't need, since pass in id
 
-        var trAccount = { accountNo: accountNo, balance: balance, customer: { id: owner } }; // automatically finds customer by id
+        var trAccount = { accountNo: accountNo, balance: balance, customer: { id: ownerId } }; // automatically finds customer by id
 
         TransactionAccountService.saveTrAccount(trAccount).then((res) => {
             navigate('/tr-accounts', { replace: true });
@@ -62,7 +62,7 @@ function CreateTrAccountComponent(props) {
                             <Form.Group className="mb-2" controlId="formBasicOwner">
                                 <Form.Label>Owner</Form.Label>
                                 <Form.Control size="sm" type="text" placeholder="Enter id for assigned customer"
-                                    value={owner} onChange={handleOwner} />
+                                    value={ownerId} onChange={handleOwner} />
                             </Form.Group>
 
                             <Button variant="primary" onClick={createTrAccount}>Submit</Button>{' '}
