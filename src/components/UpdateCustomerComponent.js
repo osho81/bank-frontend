@@ -8,15 +8,6 @@ function UpdateCustomerComponent(props) {
     const navigate = useNavigate();
     const navigateBack = useNavigate();
 
-    // const [customer, setCustomer] = useState({});
-    // const handleFName = e => { setCustomer({ fName: e.target.value }); };
-    // const handleLName = e => { setCustomer({ lName: e.target.value }); };
-    // // const handleDateOfBirth = e => { setCustomer({ dateOfBirth: e.target.value }); };
-    // // const handleSsn = e => { setCustomer({ ssn: e.target.value }); };
-    // const handleAddress = e => { setCustomer({ address: e.target.value }); };
-    // const handleEmail = e => { setCustomer({ email: e.target.value }); };
-
-
     const { id } = useParams(); // get id param from current url
 
     const [fName, setFName] = useState('');
