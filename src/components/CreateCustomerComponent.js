@@ -16,7 +16,7 @@ function CreateCustomerComponent() {
     const [address, setAddress] = useState('');
     const [email, setEmail] = useState('');
 
-    // Methods for handling entered values
+    // Methods for handling input/new values
     const handleFName = e => { setFName(e.target.value); };
     const handleLName = e => { setLName(e.target.value); };
     const handleDateOfBirth = e => { setDateOfBirth(e.target.value); };
@@ -33,7 +33,7 @@ function CreateCustomerComponent() {
         // console.log('../customer => ' + JSON.stringify(customer));
 
         CustomerService.saveCustomer(customer).then((response) => {
-            console.log(response.data)
+            // console.log(response.data)
             navigate('/customers', { replace: true });
         }).catch(error => {
             console.log(error)
