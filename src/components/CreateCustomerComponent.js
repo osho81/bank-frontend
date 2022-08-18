@@ -16,7 +16,7 @@ function CreateCustomerComponent() {
     const [address, setAddress] = useState('');
     const [email, setEmail] = useState('');
 
-    // Methods for handling new values
+    // Methods for handling entered values
     const handleFName = e => { setFName(e.target.value); };
     const handleLName = e => { setLName(e.target.value); };
     const handleDateOfBirth = e => { setDateOfBirth(e.target.value); };
