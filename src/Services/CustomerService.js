@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const CUSTOMER_API_BASE_URL = "http://localhost:8080/api/v1/customer"; 
+const USER_API_BASE_URL = "http://localhost:8080/api/v1/user";  // Temporary here, move later
 
 class CustomerService {
 
@@ -25,6 +26,15 @@ class CustomerService {
     deleteCustomer(id) {
         return axios.delete(CUSTOMER_API_BASE_URL + "/" + id);
     }
+
+
+
+    ////// Temporary API for User (not customer) /////
+
+    getCurrentUser() {
+        return axios.get(USER_API_BASE_URL + "/curruser");
+    }
+
 
 }
 
